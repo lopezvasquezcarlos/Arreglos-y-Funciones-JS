@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Funciones y Arreglos JS</title>
+  <script>
+
+    //Arreglo
+    let empleados = [];
+
+    // Función para agregar un nuevo empleado al arreglo
+    function agregarEmpleado() {
+      let nombre = document.getElementById("nombre").value;
+      let edad = document.getElementById("edad").value;
+      let puesto = document.getElementById("puesto").value;
+      let salario = document.getElementById("salario").value;
+
+    // Crear un objeto empleado con las propiedades señaladas
+      let empleado = {
+        nombre: nombre,
+        edad: edad,
+        puesto: puesto,
+        salario: salario
+      };
+
+    // Agregar el empleado al arreglo
+      empleados.push(empleado);
+      actualizarTablaEmpleados();
+    }
+
+    function buscarPorPuesto() {
+      let puestoBuscado = document.getElementById("puestoBuscado").value.toLowerCase();
+
+      let empleadosFiltrados = empleados.filter(function(empleado) {
+        return empleado.puesto.toLowerCase() === puestoBuscado;
+      });
+
+      let resultado = "Empleados con el puesto '" + puestoBuscado + "':\n";
+      empleadosFiltrados.forEach(function(empleado) {
+        resultado += "Nombre: " + empleado.nombre +
+                     "\nEdad: " + empleado.edad +
+                     "\nPuesto: " + empleado.puesto +
+                     "\nSalario: " + empleado.salario +
+                     "\n\n";
+      });
+
+      alert(resultado);
+    }
+
+function actualizarEmpleadoPorNombre() {
+      let nombreBuscado = prompt("Ingrese el nombre del empleado a actualizar:");
+      let empleadoEncontrado = empleados.find(function(empleado) {
+        return empleado.nombre.toLowerCase() === nombreBuscado.toLowerCase();
+      });
+
+      if (empleadoEncontrado) {
+    // Mostrar un formulario de actualización o utilizar prompt para ingresar los nuevos datos
+    let nuevoNombre = prompt("Ingrese el nuevo nombre del empleado:", empleadoEncontrado.nombre);
+    let nuevaEdad = parseInt(prompt("Ingrese la nueva edad del empleado:", empleadoEncontrado.edad));
+    let nuevoPuesto = prompt("Ingrese el nuevo puesto del empleado:", empleadoEncontrado.puesto);
+    let nuevoSalario = parseFloat(prompt("Ingrese el nuevo salario del empleado:", empleadoEncontrado.salario));
+
+    // Actualizar las propiedades del objeto empleado con los nuevos datos ingresados
+    empleadoEncontrado.nombre = nuevoNombre;
+    empleadoEncontrado.edad = nuevaEdad;
+    empleadoEncontrado.puesto = nuevoPuesto;
+    empleadoEncontrado.salario = nuevoSalario;
+
+    // Actualizar la tabla con los nuevos datos del empleado
+    actualizarTablaEmpleados();
+  } else {
+    alert("Empleado no encontrado");
+  }
+}
+
+//eliminar empleado, se buscara por medio de nombre
+function eliminarEmpleadoPorNombre() {
+      let nombreBuscado = prompt("Ingrese el nombre del empleado a eliminar:");
+      let indiceEmpleado = empleados.findIndex(function(empleado) {
+        return empleado.nombre.toLowerCase() === nombreBuscado.toLowerCase();
+      });
+
+      if (indiceEmpleado !== -1) {
+        empleados.splice(indiceEmpleado, 1);
+        actualizarTablaEmpleados();
+      } else {
+        alert("Empleado no encontrado");
+      }
+    }
+
+    function actualizarTablaEmpleados() {
+      let tablaEmpleados = document.getElementById("tabla-empleados");
+      tablaEmpleados.innerHTML = "<tr><th>Nombre</th><th>Edad</th><th>Puesto</th><th>Salario</th></tr>";
+
+      empleados.forEach(function(empleado) {
+        let fila = document.createElement("tr");
+
+        let celdaNombre = document.createElement("td");
+        celdaNombre.textContent = empleado.nombre;
+        fila.appendChild(celdaNombre);
+
+        let celdaEdad = document.createElement("td");
+        celdaEdad.textContent = empleado.edad;
+        fila.appendChild(celdaEdad);
+
+        let celdaPuesto = document.createElement("td");
+        celdaPuesto.textContent = empleado.puesto;
+        fila.appendChild(celdaPuesto);
+
+        let celdaSalario = document.createElement("td");
+        celdaSalario.textContent = empleado.salario;
+        fila.appendChild(celdaSalario);
+
+        tablaEmpleados.appendChild(fila);
+      });
+    }
+ </script>
+</head>
+<body>
+  <h1>Administrador de Empleados</h1>
+
+<h2>Agregar Empleado</h2>
+  <label for="nombre">Nombre:</label>
+  <input type="text" id="nombre">
+  <label for="edad">Edad:</label>
+  <input type="text" id="edad">
+  <label for="puesto">Puesto:</label>
+  <input type="text" id="puesto">
+  <label for="salario">Salario:</label>
+  <input type="text" id="salario">
+
+  <!--Botón paara agregar emleado-->
+  <button onclick="agregarEmpleado()">Agregar</button>
+
+  <!--BUSCAR EMPLEADO POR PUESTO-->
+<h2>Buscar Empleados por Puesto</h2>
+  <label for="puestoBuscado">Puesto:</label>
+  <input type="text" id="puestoBuscado">
+  <button onclick="buscarPorPuesto()">Buscar</button>
+
+<!--Actualizar empleado por nombre-->
+<h2>Actualizar Empleado por Nombre</h2>
+  <button onclick="actualizarEmpleadoPorNombre()">Actualizar por Nombre</button>
+
+  <!--Eliminar empleado, busqueda por NOMBRE-->
+<h2>Eliminar Empleado por Nombre</h2>
+  <button onclick="eliminarEmpleadoPorNombre()">Eliminar por Nombre</button>
+
+  <!--TABLA DE EMPLEADOS ALMACENADOS-->
+<h2>Empleados Registrados</h2>
+  <table id="tabla-empleados">
+    <!-- Encabezados de la tabla -->
+    <tr>
+      <th>Nombre</th>
+      <th>Edad</th>
+      <th>Puesto</th>
+      <th>Salario</th>
+    </tr>
+  </table>
+</body>
+</html>
